@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/Vocab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center|center_vertical"
+            android:text="@string/vocab"
+            android:textSize="36sp" />
+
+        <TextView
+            android:id="@+id/instructions"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="@string/input_your_vocabulary_in_english" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:text="how many flashcards do you need"
+            android:textAlignment="center" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:id="@+id/vocab1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="english vocab term 1"
+                    android:inputType="textPersonName" />
+
+                <Button
+                    android:id="@+id/ok1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ok" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:id="@+id/vocab2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="english vocab term 2"
+                    android:inputType="textPersonName" />
+
+                <Button
+                    android:id="@+id/ok2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ok" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:id="@+id/vocab3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="english vocab term 3"
+                    android:inputType="textPersonName" />
+
+                <Button
+                    android:id="@+id/ok3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ok" />
+            </TableRow>
+
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:id="@+id/vocab4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="english vocab term 4"
+                    android:inputType="textPersonName" />
+
+                <Button
+                    android:id="@+id/ok4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ok" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/vocab5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="english vocab term 5"
+                    android:inputType="textPersonName" />
+
+                <Button
+                    android:id="@+id/ok5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ok" />
+            </TableRow>
+
+        </TableLayout>
+
+        <Button
+            android:id="@+id/Continue"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/next" />
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
