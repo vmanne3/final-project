@@ -29,6 +29,14 @@ public class Flashcards extends AppCompatActivity {
         final Button Previous = findViewById(R.id.Previous);
         final Button Next = findViewById(R.id.Next);
         final Button menu = findViewById(R.id.menu);
+        String[] englishArray = received.getStringArrayExtra("englishArray");
+        String[] charactersArray = new String[5];
+        int count = 0;
+        /*for (String text : englishArray) {
+            charactersArray[count] = received.getStringExtra(text);
+            System.out.println("charactersarray first string" + charactersArray[count]);
+            count++;
+        }*/
 
         Intent intent = new Intent(this, MainActivity.class);
 
@@ -38,14 +46,17 @@ public class Flashcards extends AppCompatActivity {
             side = 0;
         } else {
             side1Array = received.getStringArrayExtra("charactersArray");
+            System.out.println("side1Array first string" + side1Array[0]);
             Flashcard.setText(side1Array[index]);
             side = 0;
         }
-
+        System.out.println("side2 string is " + side2);
         if (side2.equals("English")) {
             side2Array = received.getStringArrayExtra("englishArray");
         } else {
             side2Array = received.getStringArrayExtra("charactersArray");
+            System.out.println(side2Array);
+            //System.out.println("side2Array first string" + side2Array[0]);
         }
 
 

@@ -1,5 +1,6 @@
 package com.example.afinal;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -49,7 +50,7 @@ public class Options extends AppCompatActivity {
     //final private String p = "Pinyin";
     final private String e = "English";
     //private static String[] pinyinArray;
-    private static String[] charactersArray;
+    public String[] charactersArray = new String[]{"", "", "", "", ""};
     final private String projectId =  "final-261121";
     final private String location = "global";
     public static final MediaType MEDIA_TYPE_MARKDOWN
@@ -57,6 +58,9 @@ public class Options extends AppCompatActivity {
     private final String url = "https://yodish.p.rapidapi.com/yoda.json?text=Master%20Obiwan%20has%20lost%20a%20planet.";
     private String theTrans = "nothing";
     private int theIndex = 0;
+    private String[] englishArray;
+    //private Intent intent = new Intent(this, Flashcards.class);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,9 +68,263 @@ public class Options extends AppCompatActivity {
         setContentView(R.layout.options);
 
         addListenerOnButton();
+        //Intent intent = new Intent(this, Flashcards.class);
 
         //Start.setOnClickListener(unused -> startActivity(new Intent(this, Flashcards.class)));
     }
+
+    public String getURL(String str) {
+        String[] splitIt = str.split(" ");
+        String result = "https://yodish.p.rapidapi.com/yoda.json?text=";
+        for (int i = 0; i < splitIt.length; i++) {
+            if (i == splitIt.length - 1) {
+                result = result + splitIt[i];
+                return result;
+            }
+            result = result + splitIt[i] + "%20";
+        }
+        return result;
+    }
+
+    //make run pass a string array, with for loop inside run
+
+    public void run(String[] toPost) throws IOException {
+
+        OkHttpClient client = new OkHttpClient();
+
+        int index = 0;
+
+        RequestBody body = RequestBody.create(toPost[index], MEDIA_TYPE_MARKDOWN);
+
+        Request request = new Request.Builder()
+                .url(getURL(toPost[index]))
+                .post(body)
+                .addHeader("x-rapidapi-host", "yodish.p.rapidapi.com")
+                .addHeader("x-rapidapi-key", "16cc401140mshd664bc186fff096p1861ebjsn3d18e2fbdf33")
+                .addHeader("content-type", "application/x-www-form-urlencoded")
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                System.out.println("onFAILEure");
+                call.cancel();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                
+                final String myResponse = response.body().string();
+                Options.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //ResponseBody myResponse = response.body();
+                        //Gson gson = new Gson();
+                        String jsonData = myResponse;
+                        //System.out.println("output" + jsonData);
+                        try {
+
+                            JSONObject jObject = new JSONObject(jsonData);
+                            JSONObject jarray = jObject.getJSONObject("contents");
+                            theTrans = jarray.getString("translated");
+                            //String theName = englishArray[theIndex];
+                            //ntent.putExtra(theName, theTrans);
+                            //System.out.println("in run " + theTrans);
+                            charactersArray[theIndex] = theTrans;
+                            System.out.println("this is characters array" + charactersArray[theIndex]);
+                            theIndex++;
+                            System.out.println("please " + charactersArray[0]);
+
+                            //intent.putExtra("charactersArray", charactersArray);
+
+
+                            //System.out.println(translated);
+                            //charactersArray[theIndex] = translated;
+                            //System.out.println("this is characters array" + charactersArray[theIndex]);
+                            //theIndex++;
+                            //JsonArray allGames = result.get("games").getAsJsonArray();
+                        } catch (JSONException j) {
+                            Log.e("json", "json wack");
+                            j.printStackTrace();
+                        }
+                    }
+                });
+
+            }
+        });
+    }
+
+
+
+    public void addListenerOnButton(){
+
+        RadioGroup side1Options = findViewById(R.id.side1Options);
+        Intent intent = new Intent(this, Flashcards.class);
+        RadioGroup side2Options = findViewById(R.id.side2Options);
+        Button Start = findViewById(R.id.Start);
+        Intent received = getIntent();
+        englishArray = received.getStringArrayExtra("englishArray");
+        String[] charactersArray = new String[englishArray.length];
+        if (charactersArray.length == 0) {
+            return;
+        }
+        System.out.println("array " + charactersArray[theIndex]);
+        Start.setOnClickListener((View v) -> {
+
+            //@Override
+            //public void onClick(View v) {
+            // get selected radio button from radioGroup
+
+            int selectedId = side1Options.getCheckedRadioButtonId(); // could be these
+            int selectedId2 = side2Options.getCheckedRadioButtonId();
+
+            if (selectedId == R.id.CharactersSide1) {
+                //method translate eng->characters
+                int i = 0;
+                for (String text : englishArray) {
+                    try {
+                        run(text);
+                        charactersArray[i] = theTrans;
+                        //System.out.println("transtrans " + theTrans);
+                        //System.out.println("this is characters array" + charactersArray[i]);
+                        //charactersArray[i] = theTrans;
+                        //theIndex++;
+
+                    } catch (NullPointerException e) {
+                        Log.e("null", "yes");
+                    } catch (IOException e) {
+                        Log.e("oi", "io");
+                    }
+                    i++;
+                }
+                intent.putExtra("charactersArray", charactersArray);
+
+
+                //set side1 intent to Characters
+                intent.putExtra("side1", c);
+            }
+
+            if (selectedId == R.id.Englishside1) {
+                //set side1 intent to English
+                intent.putExtra("side1", e);
+                intent.putExtra("englishArray", englishArray);
+            }
+
+            if (selectedId2 == R.id.CharactersSide2) {
+                ///method translate eng->characters
+                int i = 0;
+                //charactersArray = new String[]{"", "", "", "", ""};
+                for (String text : englishArray) {
+                    try {
+                        run(text);
+                        //String trans = callInternet(text);
+                        //charactersArray[i] = trans;
+                        charactersArray[i] = theTrans;
+                        //System.out.println("this is characters array" + charactersArray[i]);
+                        //theIndex++;
+                        //charactersArray[i] = theTrans;
+
+
+                    } catch (NullPointerException e) {
+                        Log.e("null", "yes");
+                    } catch (IOException e) {
+                        Log.e("io", "io");
+                    }
+
+                    i++;
+                }
+                //System.out.println("before intent " + charactersArray[0]);
+                intent.putExtra("charactersArray", charactersArray);
+
+                //set side1 intent to Characters
+                intent.putExtra("side2", c);
+            }
+
+            if (selectedId2 == R.id.EnglishSide2) {
+                //set side2 intent to English
+                intent.putExtra("side2", e);
+                intent.putExtra("englishArray", englishArray);
+            }
+
+            System.out.println("before startactivty " + charactersArray[0]);
+            //go to flashcards class
+            startActivity(intent);
+
+            //}
+
+        });
+
+    }
+}
+
+
+    /*public void run(String toPost) throws IOException {
+
+        OkHttpClient client = new OkHttpClient();
+
+
+        RequestBody body = RequestBody.create(toPost, MEDIA_TYPE_MARKDOWN);
+
+        Request request = new Request.Builder()
+                .url(getURL(toPost))
+                .post(body)
+                .addHeader("x-rapidapi-host", "yodish.p.rapidapi.com")
+                .addHeader("x-rapidapi-key", "16cc401140mshd664bc186fff096p1861ebjsn3d18e2fbdf33")
+                .addHeader("content-type", "application/x-www-form-urlencoded")
+                .build();
+        System.out.println("BEFOREonFAILEure");
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                System.out.println("onFAILEure");
+                call.cancel();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                final String myResponse = response.body().string();
+
+                Options.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //ResponseBody myResponse = response.body();
+                        //Gson gson = new Gson();
+                        String jsonData = myResponse;
+                        //System.out.println("output" + jsonData);
+                        try {
+                            JSONObject jObject = new JSONObject(jsonData);
+                            JSONObject jarray = jObject.getJSONObject("contents");
+                            theTrans = jarray.getString("translated");
+                            //String theName = englishArray[theIndex];
+                            //ntent.putExtra(theName, theTrans);
+                            System.out.println("in run " + theTrans);
+                            charactersArray[theIndex] = theTrans;
+                            System.out.println("this is characters array" + charactersArray[theIndex]);
+                            theIndex++;
+                            System.out.println("please " + charactersArray[0]);
+
+                            intent.putExtra("charactersArray", charactersArray);
+
+
+                            //System.out.println(translated);
+                            //charactersArray[theIndex] = translated;
+                            //System.out.println("this is characters array" + charactersArray[theIndex]);
+                            //theIndex++;
+                            //JsonArray allGames = result.get("games").getAsJsonArray();
+                        } catch (JSONException j) {
+                            Log.e("json", "json wack");
+                            j.printStackTrace();
+                        }
+                    }
+                });
+
+            }
+        });
+    }*/
+
     /*public String translate(String[] englishArray) {
         List englishList = Arrays.asList(englishArray);
         TranslateTextRequest a = new TranslateTextRequest();
@@ -83,7 +341,7 @@ public class Options extends AppCompatActivity {
         String targetLangCode = request.getTargetLanguageCode();
 
     }*/
-    // Translating Text
+// Translating Text
     /*public static List<Translation> translateText(
             String projectId, String location, String targetLanguage, String text) throws IOException {
 
@@ -172,163 +430,40 @@ public class Options extends AppCompatActivity {
         }
     }*/
 
-    public String getURL(String str) {
-        String[] splitIt = str.split(" ");
-        String result = "https://yodish.p.rapidapi.com/yoda.json?text=";
-        for (int i = 0; i < splitIt.length; i++) {
-            if (i == splitIt.length - 1) {
-                result = result + splitIt[i];
-                return result;
-            }
-            result = result + splitIt[i] + "%20";
-        }
-        return result;
-    }
-
-
-    public void run(String toPost) throws IOException {
-
+        /*public String callInternet(String toPost) {
         OkHttpClient client = new OkHttpClient();
 
         RequestBody body = RequestBody.create(toPost, MEDIA_TYPE_MARKDOWN);
+
 
         Request request = new Request.Builder()
                 .url(getURL(toPost))
                 .post(body)
                 .addHeader("x-rapidapi-host", "yodish.p.rapidapi.com")
-                .addHeader("x-rapidapi-key", "aaf97f5dd8msh99c18088dd918e7p1f88cdjsnac081b3886d1")
+                .addHeader("x-rapidapi-key", "16cc401140mshd664bc186fff096p1861ebjsn3d18e2fbdf33")
                 .addHeader("content-type", "application/x-www-form-urlencoded")
                 .build();
-        System.out.println("BEFOREonFAILEure");
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-                System.out.println("onFAILEure");
-                call.cancel();
+
+        try {
+            Response response = client.newCall(request).execute();
+            ResponseBody myResponse = response.body();
+            Gson gson = new Gson();
+            String jsonData = myResponse.string();
+            try {
+                JSONObject jObject = new JSONObject(jsonData);
+                JSONObject jarray = jObject.getJSONObject("contents");
+                String translated = jarray.getString("translated");
+
+                return translated;
+
+            } catch (JSONException j) {
+                Log.e("json", "json wack");
+                j.printStackTrace();
             }
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
+        } catch (IOException e) {
 
-                final String myResponse = response.body().string();
-
-                Options.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        //ResponseBody myResponse = response.body();
-                        //Gson gson = new Gson();
-                        String jsonData = myResponse;
-                        //System.out.println("output" + jsonData);
-                        try {
-                            JSONObject Jobject = new JSONObject(jsonData);
-                            JSONObject jarray = Jobject.getJSONObject("contents");
-                            String translated = jarray.getString("translated");
-                            System.out.println(translated);
-                            charactersArray[theIndex] = translated;
-                            System.out.println("this is characters array" + charactersArray[theIndex]);
-                            theIndex++;
-                            //JsonArray allGames = result.get("games").getAsJsonArray();
-                        } catch (JSONException j) {
-                            Log.e("json", "json wack");
-                            j.printStackTrace();
-                        }
-                    }
-                });
-
-            }
-        });
-    }
-
-
-
-
-    public void addListenerOnButton(){
-
-        RadioGroup side1Options = findViewById(R.id.side1Options);
-        RadioGroup side2Options = findViewById(R.id.side2Options);
-        Button Start = findViewById(R.id.Start);
-        Intent received = getIntent();
-        String[] englishArray = received.getStringArrayExtra("englishArray");
-        Intent intent = new Intent(this, Flashcards.class);
-
-        Start.setOnClickListener((View v) -> {
-
-            //@Override
-            //public void onClick(View v) {
-            // get selected radio button from radioGroup
-
-            int selectedId = side1Options.getCheckedRadioButtonId(); // could be these
-            int selectedId2 = side2Options.getCheckedRadioButtonId();
-
-            if (selectedId == R.id.CharactersSide1) {
-                //method translate eng->characters
-                int i = 0;
-                charactersArray = new String[]{"", "", "", "", ""};
-                for (String text : englishArray) {
-                    try {
-                        run(text);
-                        //charactersArray[i] = theTrans;
-
-                    } catch (NullPointerException e) {
-                        Log.e("null", "yes");
-                    } catch (IOException e) {
-                        Log.e("oi", "io");
-                    }
-
-
-                    i++;
-                }
-                intent.putExtra("charactersArray", charactersArray);
-
-                //set side1 intent to Characters
-
-                intent.putExtra("side1", c);
-            }
-
-            if (selectedId == R.id.Englishside1) {
-                //set side1 intent to English
-                intent.putExtra("side1", e);
-                intent.putExtra("englishArray", englishArray);
-            }
-
-            if (selectedId2 == R.id.CharactersSide2) {
-                ///method translate eng->characters
-                int i = 0;
-                charactersArray = new String[]{"", "", "", "", ""};
-                for (String text : englishArray) {
-                    try {
-                        run(text);
-                        //charactersArray[i] = theTrans;
-
-                    } catch (NullPointerException e) {
-                        Log.e("null", "yes");
-                    } catch (IOException e) {
-                        Log.e("io", "io");
-                    }
-
-                    i++;
-                }
-                intent.putExtra("charactersArray", charactersArray);
-
-                //set side1 intent to Characters
-
-                intent.putExtra("side2", c);
-            }
-
-            if (selectedId2 == R.id.EnglishSide2) {
-                //set side2 intent to English
-                intent.putExtra("side2", e);
-                intent.putExtra("englishArray", englishArray);
-            }
-
-
-            //go to flashcards class
-            startActivity(intent);
-
-            //}
-
-        });
-
-    }
-}
+            e.printStackTrace();
+        }
+        return new String();
+    }*/
