@@ -20,8 +20,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-
-
         EditText vocab1 = findViewById(R.id.vocab1);
         englishArray = new String[5];
 
