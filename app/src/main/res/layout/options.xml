@@ -31,7 +31,7 @@
                 android:id="@+id/CharactersSide1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Characters" />
+                android:text="Yodish" />
 
         </RadioGroup>
     </LinearLayout>
@@ -63,7 +63,7 @@
                 android:id="@+id/CharactersSide2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Characters" />
+                android:text="Yodish" />
 
         </RadioGroup>
     </LinearLayout>

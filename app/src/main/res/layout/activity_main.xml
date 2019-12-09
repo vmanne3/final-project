@@ -16,37 +16,39 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center|center_vertical"
-            android:text="@string/vocab"
-            android:textSize="36sp" />
+            android:text="Yodictionary"
+            android:textSize="44sp" />
 
         <TextView
             android:id="@+id/instructions"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center"
-            android:text="@string/input_your_vocabulary_in_english" />
+            android:text="input your sentence in English" />
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="42dp"
-            android:text="how many flashcards do you need"
+            android:text="get ready to learn Yodish"
             android:textAlignment="center" />
 
         <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_width="wrap_content"
+            android:layout_height="363dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center|center_horizontal">
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <EditText
                     android:id="@+id/vocab1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="english vocab term 1"
+                    android:hint="enter text"
                     android:inputType="textPersonName" />
 
                 <Button
@@ -57,7 +59,7 @@
             </TableRow>
 
             <TableRow
-                android:layout_width="match_parent"
+                android:layout_width="326dp"
                 android:layout_height="match_parent">
 
                 <EditText
@@ -65,7 +67,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="english vocab term 2"
+                    android:hint="enter text"
                     android:inputType="textPersonName" />
 
                 <Button
@@ -76,7 +78,7 @@
             </TableRow>
 
             <TableRow
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent">
 
                 <EditText
@@ -84,7 +86,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="english vocab term 3"
+                    android:hint="enter text"
                     android:inputType="textPersonName" />
 
                 <Button
@@ -104,7 +106,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="english vocab term 4"
+                    android:hint="enter text"
                     android:inputType="textPersonName" />
 
                 <Button
@@ -123,7 +125,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="english vocab term 5"
+                    android:hint="enter text"
                     android:inputType="textPersonName" />
 
                 <Button

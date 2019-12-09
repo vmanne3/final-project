@@ -3,6 +3,7 @@
     <string name="vocab">Vocab</string>
     <string name="input_your_vocabulary_in_english">Input your vocabulary in English</string>
     <string name="next">Next</string>
+    <string name="english_vocab_term_1">english vocab term 1</string>
     <string-array name="language">
         <item>English</item>
         <item>Simplified</item>
