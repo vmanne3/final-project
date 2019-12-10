@@ -73,7 +73,7 @@ public class Flashcards extends AppCompatActivity {
 
             }
         });
-        Previous.setOnClickListener(unused -> new View.OnClickListener() {
+        Previous.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 index--;
                 if (index <= -1) {
